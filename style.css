@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&family=Staatliches&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald&family=Roboto+Mono:wght@400&display=swap');
+
+:root {
+  --toyMain: #3a2011;
+  --toyBorder: #fcfb91;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100vh;
+  height: 100vh;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 100%;
+}
+
+/*==========
+  elements
+============*/
+h1 {
+  margin: 5rem 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+/*======
+  main
+========*/
+main {
+  width: 100%;
+
+  flex: 1;
+
+  display: flex;
+  justify-content: center;
+}
+
+.main-content {
+  flex: 1;
+  max-width: 1280px;
+  max-height: 500px;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  flex: auto;
+  width: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 4rem;
+
+  border: 0.2rem solid black;
+  border-radius: 0.5rem;
+}
+
+.container a {
+  width: 100%;
+  height: 100%;
+
+  text-align: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container.art a {
+  font-size: 5rem;
+  color: black;
+  font-family: 'Oswald', sans-serif;
+}
+
+.container.art .word-art {
+  font-size: 4rem;
+  color: darkblue;
+  font-family: 'Roboto Mono', monospace;
+}
+
+footer {
+  width: 100%;
+  height: 20px;
+}
+
+/*=========
+  gallery
+===========*/
+
+
+/*=====
+  toy
+=======*/
+.toy {
+  font-size: 6rem;
+  font-family: 'Satisfy', cursive;
+
+
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(90deg, var(--toyBorder), var(--toyMain), var(--toyBorder));
+}
