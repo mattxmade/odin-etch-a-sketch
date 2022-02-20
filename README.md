@@ -10,7 +10,7 @@
   <li>Colour changer</li>
   <li>Ability to change cell shape</li>
 </ul>
-
+<br>
 <p>I also pushed myself to create a closer interaction between CSS + JavaScript to create fluid animations.</p>
 
 <p>I began this project on the 15th Feb 2022. After Some intial experimenting, I am now ready to begin building the project into the final version.</p>
