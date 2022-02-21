@@ -50,17 +50,23 @@
     <aside class="options">
       <ul class="options-menu">
 
-        <li class="grid-size-icon">
+        <li class="grid-size-icon icon">
           <div id="grid-btn" class="icon-mask"></div>
 
-          <i class="fa fa-map-o main-icon fold" aria-hidden="true"></i>
+          <i class="fa fa-map-o main-icon fold fa-grid-icon" aria-hidden="true"></i>
           <i class="fa fa-info-circle" aria-hidden="true"></i>
           <p class="menu-info-box">grid-size
             <!-- <p class="sub-info">min 1 | max 100</p> -->
           </p>
+
+          <form class="grid-form">
+            <input id="cell-input" placeholder="1-100" type="number" min="1" max="100" size="100">
+            <button type="submit">Submit form</button>
+          </form>
+
         </li>
 
-        <li class="eraser-icon">
+        <li class="eraser-icon icon">
           <div id="eraser-btn" class="icon-mask"></div>
 
           <i class="fa fa-eraser main-icon fold" aria-hidden="true"></i>
@@ -68,17 +74,25 @@
           <p class="menu-info-box">eraser</p>
         </li>
 
-        <li class="shape-icon js-icons">
+        <li class="shape-icon icon">
           <div id="shape-btn" class="icon-mask"></div>
 
-          <i class="fa fa-cube main-icon fold js-icons" aria-hidden="true"></i>
+          <i class="fa fa-cube main-icon fold fa-shape-icon" aria-hidden="true"></i>
           <i class="fa fa-info-circle" aria-hidden="true"></i>
           <p class="menu-info-box">shape
             <!-- <p class="sub-info">square | round</p> -->
           </p>
         </li>
 
-        <li class="colour-icon">
+        <li class="reset-icon icon">
+          <div id="reset-btn" class="icon-mask"></div>
+
+          <i class="fa fa-trash main-icon" aria-hidden="true"></i>
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          <p class="menu-info-box">Reset</p>
+        </li>
+
+        <li class="colour-icon icon">
           <div id="colour-btn" class="icon-mask"></div>
 
           <i class="fa fa-circle main-icon fold colour-r" aria-hidden="true"></i>
@@ -89,10 +103,12 @@
             <!-- <p class="sub-info">black | random</p> -->
           </p>
         </li>
-
       </ul>
+
+      <div class="colour-picker">
+      </div>
+
     </aside>
-    
   </div>
   
 </body>
