@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Satisfy&family=Staatliches&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald&family=Roboto+Mono:wght@400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&display=swap');
+
+:root {
+  --toyMain: #3a2011;
+  --toyBorder: #fcfb91;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100vh;
+  height: 100vh;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+}
+
+/*==========
+  elements
+============*/
+h1 {
+  font-size: 4rem;
+  text-align: center;
+  font-family: 'Caveat', cursive;
+  visibility: hidden;
+}
+
+a {
+  text-decoration: none;
+  margin: 2rem;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+
+  max-height: 2000px;
+  height: 100%;
+
+  overflow: hidden;
+}
+
+/*======
+  main
+========*/
+main {
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+}
+
+.main-content {
+  max-width: 1280px;
+  max-height: 500px;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  position: relative;
+  top: -10rem;
+}
+
+.container {
+  width: 50%;
+  flex: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 4rem;
+
+  border: 0.2rem solid rgba(0, 0, 0, 0.13);
+  border-radius: 0.5rem;
+}
+
+.container:hover {
+  outline: 1rem solid yellow;
+}
+
+.container a {
+  width: 100%;
+  height: 100%;
+
+  text-align: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+footer {
+  width: 100%;
+  height: 5rem;
+  color: black;
+
+  display: flex;
+  justify-content: center;
+}
+
+.footer-content {
+  width: 75rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 2rem;
+}
+
+.footer-content ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  justify-self: center;
+  position: relative;
+  z-index: 10;
+
+  margin-bottom: 2rem;
+}
+
+footer .author {
+  font-size: 2rem;
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+footer i.fa {
+  font-size: 5rem;
+  color: rgb(40, 40, 40);
+}
+
+.forever-box {
+  position: absolute;
+  height: inherit;
+  width: 100vw;
+  /* background-color: black; */
+}
+
+/*=========
+  gallery
+===========*/
+
+
+/*=====
+  toy
+=======*/
+.toy {
+  font-size: 6rem;
+  font-family: 'Satisfy', cursive;
+
+
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(90deg, var(--toyBorder), var(--toyMain), var(--toyBorder));
+}
+
+@media (max-width: 980px) {
+  .main-content {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+
+  .container {
+    width: 95%;
+    height: 50%;
+    margin: 0.5rem;
+  }
+
+  footer {
+    margin-top: 0.5rem;
+  }
+  
+}
+
+@media (max-width: 545px) {
+  .toy {
+    font-size: 3.2rem;
+  }
+}
