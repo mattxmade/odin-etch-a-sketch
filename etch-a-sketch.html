@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="styles/etch-a-sketch.css">
+  <title>Etch-A-Sketch</title>
+</head>
+<body>
+
+  <div class="wrapper">
+    <div class="menu-button">
+      <div id="menu-btn" class="btn-mask"></div>
+      <div class="bar-top"></div>
+      <div class="bar-mid"></div>
+      <div class="bar-bot"></div>
+    </div>
+  
+    <main>
+      <div class="eas-body">
+        <div class="border"></div>
+        <div class="eas-logos">
+          <div class="eas-logo"><i class="fa fa-globe" aria-hidden="true"></i></div>
+          <p class="small-font">MAGIC</p><h1>EtchASketch</h1><p>SCREEN</p>
+          </div>
+  
+        <div class="eas-screen grid">
+          <!-- <div class="grid-container"></div> -->
+        </div>
+  
+        <div class="eas-dials">
+          <div class="eas-dial eas-dial-left">
+            <div id="firstDial" class="dot-holder">
+              <div class="eas-dial-dot eas-dial-dot-left"></div>
+            </div>
+            
+          </div>
+          <div class="eas-dial eas-dial-right">
+            <div id="secondDial" class="dot-holder">
+              <div class="eas-dial-dot eas-dial-dot-right"></div>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </main>
+
+    <aside class="options">
+      <ul class="options-menu">
+
+        <li class="grid-size-icon">
+          <div id="grid-btn" class="icon-mask"></div>
+
+          <i class="fa fa-map-o main-icon fold" aria-hidden="true"></i>
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          <p class="menu-info-box">grid-size
+            <!-- <p class="sub-info">min 1 | max 100</p> -->
+          </p>
+        </li>
+
+        <li class="eraser-icon">
+          <div id="eraser-btn" class="icon-mask"></div>
+
+          <i class="fa fa-eraser main-icon fold" aria-hidden="true"></i>
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          <p class="menu-info-box">eraser</p>
+        </li>
+
+        <li class="shape-icon js-icons">
+          <div id="shape-btn" class="icon-mask"></div>
+
+          <i class="fa fa-cube main-icon fold js-icons" aria-hidden="true"></i>
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          <p class="menu-info-box">shape
+            <!-- <p class="sub-info">square | round</p> -->
+          </p>
+        </li>
+
+        <li class="colour-icon">
+          <div id="colour-btn" class="icon-mask"></div>
+
+          <i class="fa fa-circle main-icon fold colour-r" aria-hidden="true"></i>
+          <i class="fa fa-circle main-icon fold colour-g" aria-hidden="true"></i>
+          <i class="fa fa-circle main-icon fold colour-b" aria-hidden="true"></i>
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          <p class="menu-info-box">color
+            <!-- <p class="sub-info">black | random</p> -->
+          </p>
+        </li>
+
+      </ul>
+    </aside>
+    
+  </div>
+  
+</body>
+<script src="scripts/etch-a-sketch.js"></script>
+</html>
