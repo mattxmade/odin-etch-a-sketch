@@ -1,34 +1,51 @@
+let drawColour = 'black';
+let lastColour = '';
+let lastCellTotal = 0;
+
+let zIndex = 9;
+
+let cellShape = 0;
+
 generateGrid(8);
 
-let colour = 'black';
-
-function removeAll(grid) {
+function removeAll(cellNum) {
+  const removeGrid = document.querySelector('.grid-container');
   const cells = document.querySelectorAll('.cell-block');
 
-  // grid.remove();
-
   cells.forEach(cell => {
-    cell.remove();
-    grid.remove();
+    // cell.remove();
+    // removeGrid.remove();
   });
-  generateGrid(64);
+  drawColour = getRandomColour();
+  //isEven(zIndex) ? colour = 'white' : colour = 'black';
+  generateGrid(cellNum);
 }
 
-let = false;
+// https://stackoverflow.com/a/6211660
+function isEven(n) {
+  return n % 2 == 0;
+}
+
+function isOdd(n) {
+  return Math.abs(n % 2) == 1;
+}
 
 function generateGrid(cellNum = 16, grid = null, div = null) {
+
+  lastCellTotal = cellNum;
 
   // How big in pixels should the grid be?
   const gridSizeW = 485; // fixed
   const gridSizeH = 325; // fixed
 
+  // grid parent container is screen
   const parentContainer = document.querySelector('.eas-screen');
 
   grid = document.createElement('div');
   grid.classList.add('grid-container');
-  parentContainer.appendChild(grid);
+  grid.style.zIndex = zIndex+=1;
 
-  // const grid = document.querySelector('.grid-container');
+  parentContainer.appendChild(grid);
 
   grid.style.width = `${gridSizeW}px`;
   grid.style.height = `${gridSizeH}px`;
@@ -36,9 +53,6 @@ function generateGrid(cellNum = 16, grid = null, div = null) {
   // A div will act as a cell
   div = document.createElement('div');
   div.classList.add('cell-block');
-
-  // How many cells should the grid contain? | User definded
-  // let cellNum  = 8;
 
   // Calculate the size each cell will be
   let cellSizeW = gridSizeW / cellNum;
@@ -56,12 +70,17 @@ function generateGrid(cellNum = 16, grid = null, div = null) {
 
   // cellArray stores each new cell on each iteration
   for (let i = 0; i < newGrid; i++) {
+
     let newCell = div.cloneNode(true);
+    newCell.style.zIndex = zIndex;
+
     grid.appendChild(newCell);
     cellArray.push(newCell);
   }
 
   const menuButtons = document.querySelectorAll('.icon-mask');
+  const fillShapeButton  = document.querySelector('.fa-shape-icon');
+  const colourDrawer = document.querySelector('.colour-picker');
 
   menuButtons.forEach(button => {
 
@@ -71,19 +90,26 @@ function generateGrid(cellNum = 16, grid = null, div = null) {
       switch(buttonID) {
         case 'grid-btn':
           console.log('grid button clicked');
-          removeAll(grid);
+          // transition
           break;
         case 'eraser-btn':
-          colour = 'transparent'
+          lastColour = drawColour;
+          drawColour = 'transparent'
           console.log('eraser button clicked');
           break;
         case 'shape-btn':
           console.log('shaper button clicked');
-          //toggle class shape
-          quickToggle(cellArray);
-          break;  
+          fillShapeButton.classList.toggle('fa-cube');
+          fillShapeButton.classList.toggle('fa-circle');
+          setCellFill();
+          break; 
+        case 'reset-btn':
+          resetGrid(cellArray);
+          console.log('reset button clicked');
+          break;
         case 'colour-btn':
-          colour = getRandomColour();
+          // drawColour = getRandomColour();
+          colourDrawer.classList.toggle('colour-tray');
           console.log('colour button clicked');
           break;      
       }
@@ -92,12 +118,41 @@ function generateGrid(cellNum = 16, grid = null, div = null) {
   });
 
   gridListeners(grid, cellArray);
+  setCellCount();
 }
 
-function quickToggle(array) {
-  array.forEach(item => {
-    item.classList.toggle('.toggleRoundness');
-  })
+function resetGrid(nodeList) {
+  const cells = document.querySelectorAll('.cell-block');
+
+  cells.forEach(cell => {
+    console.log(cell);
+    cell.style.background = 'transparent';
+  });
+} 
+
+function setCellCount() {
+  let value = lastCellTotal;
+
+  const form = document.querySelector('.grid-form');
+  const cellInput = document.getElementById('cell-input');
+
+  cellInput.addEventListener('change', (e) => {
+    value = Number(e.target.value);
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (value > 0 && value <= 100 && value !== lastCellTotal) {
+      console.log(value);
+      console.log(e.type);
+      
+      removeAll(value);
+    }
+  });
+}
+
+function setCellFill() {
+  cellShape === 0 ? cellShape = 100 : cellShape = 0;
 }
 
 function gridListeners(grid, cellArray) {
@@ -152,19 +207,21 @@ function drawCaller(grid, cellArray) {
 }
 
 function updateCell(e) {
-  // e.target.style.borderRadius = '50%';
+  // e.target.style.borderRadius = '100%';
+  e.target.style.borderRadius = `${cellShape}%`;
 
   const newColour = getRandomColour();
   const saturate  = Math.round(getRandomNumber(100));
   
   // e.target.style.backgroundColor = newColour;
   // e.target.style.background = `linear-gradient(45deg, ${newColour}, red, red, blue, ${newColour})`;
-  e.target.style.background = colour;
+  e.target.style.background = drawColour;
   // e.target.style.filter = `saturate(${saturate}%)`;
 }
 
 function getRandomColour() {
-  const randomColours = ['red','green','blue'];
+  //const randomColours = ['red','green','blue'];
+  const randomColours = CSS_COLOR_NAMES;
   
   let randomColour = randomColours[Math.floor
     (Math.random() * randomColours.length)];
@@ -199,3 +256,272 @@ menuHamburger.addEventListener('click', () => {
 //   animateBarTop.classList.remove('animate-bar-top');
 //   animateBarBot.classList.remove('animate-bar-bot');
 // });
+
+const CSS_COLOR_NAMES = [
+  "AliceBlue",
+  "AntiqueWhite",
+  "Aqua",
+  "Aquamarine",
+  "Azure",
+  "Beige",
+  "Bisque",
+  "Black",
+  "BlanchedAlmond",
+  "Blue",
+  "BlueViolet",
+  "Brown",
+  "BurlyWood",
+  "CadetBlue",
+  "Chartreuse",
+  "Chocolate",
+  "Coral",
+  "CornflowerBlue",
+  "Cornsilk",
+  "Crimson",
+  "Cyan",
+  "DarkBlue",
+  "DarkCyan",
+  "DarkGoldenRod",
+  "DarkGray",
+  "DarkGrey",
+  "DarkGreen",
+  "DarkKhaki",
+  "DarkMagenta",
+  "DarkOliveGreen",
+  "DarkOrange",
+  "DarkOrchid",
+  "DarkRed",
+  "DarkSalmon",
+  "DarkSeaGreen",
+  "DarkSlateBlue",
+  "DarkSlateGray",
+  "DarkSlateGrey",
+  "DarkTurquoise",
+  "DarkViolet",
+  "DeepPink",
+  "DeepSkyBlue",
+  "DimGray",
+  "DimGrey",
+  "DodgerBlue",
+  "FireBrick",
+  "FloralWhite",
+  "ForestGreen",
+  "Fuchsia",
+  "Gainsboro",
+  "GhostWhite",
+  "Gold",
+  "GoldenRod",
+  "Gray",
+  "Grey",
+  "Green",
+  "GreenYellow",
+  "HoneyDew",
+  "HotPink",
+  "IndianRed",
+  "Indigo",
+  "Ivory",
+  "Khaki",
+  "Lavender",
+  "LavenderBlush",
+  "LawnGreen",
+  "LemonChiffon",
+  "LightBlue",
+  "LightCoral",
+  "LightCyan",
+  "LightGoldenRodYellow",
+  "LightGray",
+  "LightGrey",
+  "LightGreen",
+  "LightPink",
+  "LightSalmon",
+  "LightSeaGreen",
+  "LightSkyBlue",
+  "LightSlateGray",
+  "LightSlateGrey",
+  "LightSteelBlue",
+  "LightYellow",
+  "Lime",
+  "LimeGreen",
+  "Linen",
+  "Magenta",
+  "Maroon",
+  "MediumAquaMarine",
+  "MediumBlue",
+  "MediumOrchid",
+  "MediumPurple",
+  "MediumSeaGreen",
+  "MediumSlateBlue",
+  "MediumSpringGreen",
+  "MediumTurquoise",
+  "MediumVioletRed",
+  "MidnightBlue",
+  "MintCream",
+  "MistyRose",
+  "Moccasin",
+  "NavajoWhite",
+  "Navy",
+  "OldLace",
+  "Olive",
+  "OliveDrab",
+  "Orange",
+  "OrangeRed",
+  "Orchid",
+  "PaleGoldenRod",
+  "PaleGreen",
+  "PaleTurquoise",
+  "PaleVioletRed",
+  "PapayaWhip",
+  "PeachPuff",
+  "Peru",
+  "Pink",
+  "Plum",
+  "PowderBlue",
+  "Purple",
+  "RebeccaPurple",
+  "Red",
+  "RosyBrown",
+  "RoyalBlue",
+  "SaddleBrown",
+  "Salmon",
+  "SandyBrown",
+  "SeaGreen",
+  "SeaShell",
+  "Sienna",
+  "Silver",
+  "SkyBlue",
+  "SlateBlue",
+  "SlateGray",
+  "SlateGrey",
+  "Snow",
+  "SpringGreen",
+  "SteelBlue",
+  "Tan",
+  "Teal",
+  "Thistle",
+  "Tomato",
+  "Turquoise",
+  "Violet",
+  "Wheat",
+  "White",
+  "WhiteSmoke",
+  "Yellow",
+  "YellowGreen",
+];
+
+colourGrid();
+
+function colourGrid() {
+
+  // How big in pixels should the grid be?
+  const gridSizeW = 245; // fixed
+  const gridSizeH = 525; // fixed
+
+  // grid parent container is screen
+  const parentContainer = document.querySelector('.colour-picker');
+
+  const grid = document.createElement('div');
+  grid.classList.add('colour-chart-grid');
+
+  parentContainer.appendChild(grid);
+
+  grid.style.width = `${gridSizeW}px`;
+  grid.style.height = `${gridSizeH}px`;
+
+  // A div will act as a cell
+  const div = document.createElement('div');
+  div.classList.add('colour-cell');
+
+  const cellNum = 6;
+  console.log(cellNum);
+
+   let cellSizeW = 40
+  let cellSizeH = 40;
+
+  // cellSize is set as newCell cell W x H
+  div.style.width = `${cellSizeW}px`;
+  div.style.height = `${cellSizeH}px`;
+
+  // Number of cells needed to fill grid
+  let newGrid  = cellNum * cellNum;
+
+  // Array to store created cells
+  const cellArray = [];
+
+  // cellArray stores each new cell on each iteration
+  for (let i = 0; i < newGrid; i++) {
+
+    let newCell = div.cloneNode(true);
+
+    grid.appendChild(newCell);
+    cellArray.push(newCell); 
+  }
+
+  const thirtySix = [
+    'Black',
+    'White',
+    'Red',
+    'Yellow',
+    'Green',
+    'Blue',
+    'Orange',
+    'Violet',
+    'Brown',
+    'Aqua',
+    'Pink',
+    'Navy',
+    'Purple',
+    'Coral',
+    'Grey',
+    'DarkOrgange',
+    'LightBlue',
+    'LightGreen',
+    'Magenta',
+    'Navy',
+    'OrangeRed',
+    'PeachPuff',
+    'RebeccaPurple',
+    'RoyalBlue',
+    'Silver',
+    'SteelBlue',
+    'Turquoise',
+    'MediumPurple',
+    'MidnightBlue',
+    'LimeGreen',
+    'Khaki',
+    'Ivory',
+    'GreenYellow',
+    'DarkSlateGrey',
+    'Crimson',
+    'Beige'
+  ];
+
+  thirtySix.forEach((colour, index) => {
+    cellArray[index].style.background = colour;
+  });
+
+  cellArray.forEach((colourCell, index) => {
+
+    colourCell.id = thirtySix[index];
+
+    colourCell.addEventListener('click', (e) => {
+      console.log(e.target.id);
+    })
+
+    colourCell.addEventListener('hover', (e) => {
+      const colourTag = document.createElement('p');
+      colourTag.textContent = colourCell.id;
+
+      colourTag.style.color = 'black';
+      colourTag.style.background = 'white';
+      colourTag.style.width = '100px';
+      colourTag.style.height = '50px';
+      colourTag.style.zIndex = 2000;
+
+      const colourChart = document.querySelector('.colour-cell');
+      colourChart.appendChild(colourTag)
+    });
+
+
+  });
+
+}
