@@ -48,6 +48,32 @@
     </main>
 
     <aside class="options">
+      <div class="grid-configure">
+        <form class="grid-form">
+          <div class="cell-number-input">
+            <div class="label">
+              <i class="fa fa-th" aria-hidden="true"></i>
+              <label for="cell-input">New Grid Layer</label>
+            </div>
+            <div class="inputs">
+              <input id="cell-input" placeholder="Cells" type="number" min="1" max="100" size="100">
+              <button type="submit">New Grid</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="layer-template">
+          <p>layer 1</p>
+          <p>[8]</p>
+          <div class="outline-toggle">
+            <div class="outline-icon"></div>
+            <input name="layer-name" type="checkbox">
+          </div>
+          <i class="fa fa-trash-o main-icon js-delete-layer" aria-hidden="true"></i>
+        </div>
+
+      </div>
+
       <ul class="options-menu">
 
         <li class="grid-size-icon icon">
@@ -58,11 +84,6 @@
           <p class="menu-info-box">grid-size
             <!-- <p class="sub-info">min 1 | max 100</p> -->
           </p>
-
-          <form class="grid-form">
-            <input id="cell-input" placeholder="1-100" type="number" min="1" max="100" size="100">
-            <button type="submit">Submit form</button>
-          </form>
 
         </li>
 
