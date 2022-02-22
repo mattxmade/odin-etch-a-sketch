@@ -6,6 +6,8 @@ let zIndex = 9;
 
 let cellShape = 0;
 
+let layerNumber = 1;
+
 generateGrid(8);
 
 function removeAll(cellNum) {
@@ -13,21 +15,71 @@ function removeAll(cellNum) {
   const cells = document.querySelectorAll('.cell-block');
 
   cells.forEach(cell => {
-    // cell.remove();
-    // removeGrid.remove();
+    cell.remove();
+    removeGrid.remove();
   });
-  drawColour = getRandomColour();
-  //isEven(zIndex) ? colour = 'white' : colour = 'black';
   generateGrid(cellNum);
+  addGridLayer(cellNum);
 }
 
-// https://stackoverflow.com/a/6211660
-function isEven(n) {
-  return n % 2 == 0;
-}
+function addGridLayer(number) {
+  layerNumber +=1;
 
-function isOdd(n) {
-  return Math.abs(n % 2) == 1;
+  const gridConfigPContainer = document.querySelector('.grid-configure');
+  
+  // contains below elements
+  const newLayer = document.createElement('div');
+  newLayer.classList.add('layer-template');
+
+  // layer name
+  const layerName = document.createElement('p');
+  layerName.textContent = `Layer ${layerNumber}`;
+
+  // number of cells
+  const numOfCells = document.createElement('p');
+  numOfCells.textContent = `[${number}]`;
+
+  // outline group
+  const outlineToggle = document.createElement('div');
+  outlineToggle.classList.add('outline-toggle');
+
+  // outline icon
+  const outlineIcon = document.createElement('div');
+  outlineIcon.classList.add('outline-icon');
+
+  // turn outline of layer on/off
+  const outlineCheckbox = document.createElement('input');
+  outlineCheckbox.name = 'layer-name';
+  outlineCheckbox.type = 'checkbox';
+
+  const deleteIcon = document.createElement('i');
+  deleteIcon.classList.add('fa');
+  deleteIcon.classList.add('fa-trash-o');
+  deleteIcon.classList.add('main-icon');
+  deleteIcon.classList.add('js-delete-layer');
+  deleteIcon.ariaHidden = true;
+
+
+  newLayer.appendChild(layerName);
+  newLayer.appendChild(numOfCells);
+
+  outlineToggle.appendChild(outlineIcon)
+  outlineToggle.appendChild(outlineCheckbox)
+
+  newLayer.appendChild(outlineToggle);
+
+  newLayer.appendChild(deleteIcon);
+
+  gridConfigPContainer.appendChild(newLayer);
+//  <div class="layer-template">
+//   <p>layer 1</p>
+//   <p>[8]</p>
+//   <div class="outline-toggle">
+//     <div class="outline-icon"></div>
+//     <input name="layer-name" type="checkbox">
+//   </div>
+//   <i class="fa fa-trash-o main-icon js-delete-layer" aria-hidden="true"></i>
+// </div>
 }
 
 function generateGrid(cellNum = 16, grid = null, div = null) {
@@ -78,48 +130,50 @@ function generateGrid(cellNum = 16, grid = null, div = null) {
     cellArray.push(newCell);
   }
 
-  const menuButtons = document.querySelectorAll('.icon-mask');
-  const fillShapeButton  = document.querySelector('.fa-shape-icon');
-  const colourDrawer = document.querySelector('.colour-picker');
-
-  menuButtons.forEach(button => {
-
-    button.addEventListener('click', (e) => {
-      const buttonID = e.target.id;
-
-      switch(buttonID) {
-        case 'grid-btn':
-          console.log('grid button clicked');
-          // transition
-          break;
-        case 'eraser-btn':
-          lastColour = drawColour;
-          drawColour = 'transparent'
-          console.log('eraser button clicked');
-          break;
-        case 'shape-btn':
-          console.log('shaper button clicked');
-          fillShapeButton.classList.toggle('fa-cube');
-          fillShapeButton.classList.toggle('fa-circle');
-          setCellFill();
-          break; 
-        case 'reset-btn':
-          resetGrid(cellArray);
-          console.log('reset button clicked');
-          break;
-        case 'colour-btn':
-          // drawColour = getRandomColour();
-          colourDrawer.classList.toggle('colour-tray');
-          console.log('colour button clicked');
-          break;      
-      }
-
-    });
-  });
-
   gridListeners(grid, cellArray);
   setCellCount();
 }
+
+const menuButtons = document.querySelectorAll('.icon-mask');
+const gridConfig = document.querySelector('.grid-configure');
+const fillShapeButton  = document.querySelector('.fa-shape-icon');
+const colourDrawer = document.querySelector('.colour-picker');
+
+menuButtons.forEach(button => {
+
+  button.addEventListener('click', (e) => {
+    const buttonID = e.target.id;
+
+    switch(buttonID) {
+      case 'grid-btn':
+        gridConfig.classList.toggle('grid-drawer');
+        console.log('grid button clicked');
+        // transition
+        break;
+      case 'eraser-btn':
+        lastColour = drawColour;
+        drawColour = 'transparent';
+        console.log('eraser button clicked');
+        break;
+      case 'shape-btn':
+        console.log('shaper button clicked');
+        fillShapeButton.classList.toggle('fa-cube');
+        fillShapeButton.classList.toggle('fa-circle');
+        setCellFill();
+        break; 
+      case 'reset-btn':
+        removeAll(8);
+        console.log('reset button clicked');
+        break;
+      case 'colour-btn':
+        // drawColour = getRandomColour();
+        colourDrawer.classList.toggle('colour-tray');
+        console.log('colour button clicked');
+        break;      
+    }
+
+  });
+});
 
 function resetGrid(nodeList) {
   const cells = document.querySelectorAll('.cell-block');
@@ -434,7 +488,7 @@ function colourGrid() {
   const cellNum = 6;
   console.log(cellNum);
 
-   let cellSizeW = 40
+  let cellSizeW = 40
   let cellSizeH = 40;
 
   // cellSize is set as newCell cell W x H
@@ -501,26 +555,39 @@ function colourGrid() {
 
   cellArray.forEach((colourCell, index) => {
 
+    // set cell id to colour name
     colourCell.id = thirtySix[index];
 
     colourCell.addEventListener('click', (e) => {
       console.log(e.target.id);
-    })
 
-    colourCell.addEventListener('hover', (e) => {
-      const colourTag = document.createElement('p');
+      let newColour = e.target.id;
+      drawColour = newColour;
+    });
+
+    const colourTag = document.createElement('p');
+    const colourChart = document.querySelector('.colour-cell');
+
+    colourCell.addEventListener('mouseenter', () => {
+      
       colourTag.textContent = colourCell.id;
 
       colourTag.style.color = 'black';
       colourTag.style.background = 'white';
-      colourTag.style.width = '100px';
-      colourTag.style.height = '50px';
+      colourTag.style.width = 'fit-content';
+      colourTag.style.height = 'fit-content';
       colourTag.style.zIndex = 2000;
 
-      const colourChart = document.querySelector('.colour-cell');
-      colourChart.appendChild(colourTag)
-    });
+      colourTag.style.position = 'relative';
 
+      colourTag.style.left = '4rem';
+      colourTag.style.top = '-5rem';
+      
+      colourChart.appendChild(colourTag);
+    });
+    colourCell.addEventListener('mouseleave', () => {
+      colourTag.remove();
+    });
 
   });
 
