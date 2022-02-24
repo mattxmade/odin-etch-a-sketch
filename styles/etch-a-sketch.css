@@ -4,6 +4,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Satisfy&family=Staatliches&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Khand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600&display=swap');
 
 /*===========
   Variables
@@ -26,7 +27,7 @@
 * {
   margin: 0;
   padding: 0;
-  outline: 1px solid rgba(255, 0, 0, 0.1);
+  /* outline: 1px solid rgba(255, 0, 0, 0.1); */
 }
 
 body {
@@ -36,17 +37,19 @@ body {
   align-items: center;
   justify-content: center;
 
-  overflow: hidden;
+
   background: linear-gradient(45deg, white, rgb(255, 225, 225), white);
 }
 
 .wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
 
   width: 2000px;
+
+  height: 100vh;
 }
 
 main {
@@ -55,29 +58,33 @@ main {
   height: 100%;
 
   display: flex;
-  align-content: center;
+  align-items: center;
   justify-content: center;
 
+  top: 2rem;
   position: relative;
-  top: -4rem;
   z-index: 500;
 }
 
 .grid-container {
   width: 100%;
   height: 100%;
+
   display: flex;
   flex-wrap: wrap;
 
+  /*firefix*/
+  align-items: center;
+  justify-content: center;
+  /*firefix*/
+
   position: absolute;
-  /* z-index: 10; */
+  z-index: 10;
 
   padding: 5px;
   
   border-radius: 4px;
-  filter: saturate(50%);
-  background: linear-gradient(90deg, whitesmoke, rgb(255, 206, 206), rgb(231, 231, 231), rgb(255, 206, 206), whitesmoke);
-  filter: blur(0.4px);
+  /* filter: saturate(50%); */
 
   box-shadow: 0px 0px 6px 0px rgb(121, 118, 118);
 
@@ -86,6 +93,9 @@ main {
 
 .cell-block {
   position: relative;
+
+  justify-self: flex-start;
+  align-self: flex-start;
 }
 
 .eas-body {
@@ -138,7 +148,6 @@ main {
   border-radius: 5px;
   height: 60px;
 
-
   box-shadow: 0 0 10px 1px #d3ae0b;
   margin-right: 65px;
   position: relative;
@@ -153,8 +162,11 @@ main {
   font-size: 50px;
 }
 
-p, label {
+.eas-logos p {
   font-style: italic;
+}
+
+p, label {
   font-family: 'Staatliches', cursive;
   font-size: 25px;
 }
@@ -179,23 +191,6 @@ h1 {
   box-shadow: 0 0 6px 0 black;
   border: 1px solid rgb(138, 0, 0);
   background: linear-gradient(45deg, var(--screenColor), rgb(241, 206, 206), var(--screenColor), rgb(176, 245, 250), var(--screenColor));
-}
-
-.grid-container {
-  display: flex;
-  flex-wrap: wrap;
-
-  position: absolute;
-  z-index: 10;
-
-  padding: 5px;
-  
-  border-radius: 4px;
-  filter: saturate(50%);
-  background: transparent;
-  filter: blur(0.4px);
-
-  box-shadow: 0px 0px 6px 0px rgb(121, 118, 118);
 }
 
 .toggleRoundness {
@@ -237,8 +232,8 @@ h1 {
   height: 3.5rem;
 
   position: relative;
-  top: -5.5rem;
-  left: -37.5rem;
+  top: 1rem;
+  left: -37.3rem;
 
   border-radius: 0.5rem;
   background-color: white;
@@ -286,7 +281,6 @@ h1 {
 ===========*/
 aside.options {
   position: relative;
-  z-index: 2000;
 }
 
 .options .icon-mask,
@@ -308,10 +302,11 @@ aside.options {
   display: flex;
   gap: 5rem;
 
-  bottom: 13rem;
+  bottom: 7rem;
 
   transition: 0.3s;
   transition-timing-function: ease-out;
+  font-style: italic;
 }
 
 .launch-menu {
@@ -397,7 +392,7 @@ aside.options {
 .grid-configure {
   position: absolute;
 
-  bottom: 7.8rem;
+  bottom: 1.8rem;
 
   transform: translate(-50%, 0);
 
@@ -425,13 +420,15 @@ aside.options {
 ==================================*/
 .grid-configure {
   left: 5.3rem;
-  align-items: flex-start;
-  flex-direction: column;
 
   align-items: center;
+  flex-direction: column;
   justify-content: flex-start;
 
   padding: 1rem;
+
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 .grid-drawer {
@@ -467,6 +464,16 @@ aside.options {
   margin: 0.5rem 0;
 }
 
+.label {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly
+}
+
+.label i.fa {
+  font-size: 1.5rem;
+}
+
 .inputs {
   display: flex;
   justify-content:space-around;
@@ -490,6 +497,7 @@ button {
 .layer-template {
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 
   margin: 0.5rem 0;
@@ -497,11 +505,26 @@ button {
   padding: 0.5rem;
   border-radius: 0.5rem;
   border: 0.1rem solid gray;
+
+  cursor: cell;
 }
 
-.layer-template p {
+.selected {
+  outline: 0.5rem solid yellow;
+}
+
+.js-z-index {
+  z-index: 2000;
+}
+
+.layer-name,
+.cell-number {
+  text-align: center;
   font-style: normal;
   font-family: 'Khand', sans-serif;
+
+  max-width: 3rem;
+  cursor: default;
 }
 
 .outline-toggle {
@@ -509,19 +532,36 @@ button {
   align-items: center;
 }
 
-.layer-template .outline-icon {
+.outline-icon {
   width: 1rem;
   height: 1rem;
   border: 0.1rem dashed black;
+  cursor: default;
 }
 
-.layer-template input {
+.outline-checkbox {
   margin-left: 0.5rem;
 }
 
-.layer-template input,
+.outline-checkbox,
 .layer-template i.fa {
   cursor: pointer;
+}
+
+/*============
+  Scroll bar                                          https://stackoverflow.com/a/66166118
+==============*/
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 20px;
+  border: transparent;
 }
 
 /*=============================
@@ -551,12 +591,66 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  border: 1px solid rgba(255, 0, 0, 0.1);
+  cursor: pointer;
 }
 
-.colour-cell:hover {
+/* .colour-cell:hover {
   outline: 0.2rem solid black;
-}
+} */
 
 .colour-cell p {
   text-align: center;
+}
+
+/*========
+  footer
+=========*/
+footer {
+  width: 100%;
+  color: black;
+
+  display: flex;
+  justify-content: center;
+  position: relative;
+  bottom: -10rem;
+}
+
+.footer-content {
+  width: 78rem;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-content ul {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  justify-self: center;
+  position: relative;
+  z-index: 10;
+}
+
+.footer-content li {
+  margin: 0 0.5rem;
+}
+
+footer .author {
+  font-size: 1rem;
+  font-family: 'Chakra Petch', sans-serif;
+  color: rgb(50, 63, 119);
+
+  align-self: flex-end;
+}
+
+.author a {
+  text-decoration: none;
+}
+
+footer i.fa {
+  font-size: 2rem;
+  color: rgb(40, 40, 40);
 }
