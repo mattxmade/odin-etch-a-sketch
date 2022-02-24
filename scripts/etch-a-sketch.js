@@ -2,42 +2,61 @@ let drawColour = 'black';
 let lastColour = '';
 let lastCellTotal = 0;
 
-let zIndex = 9;
+let zIndex = -1;
 
 let cellShape = 0;
 
-let layerNumber = 1;
+let layerNumber = 0;
 
-generateGrid(8);
+let stateOfUI = 'active';
+
+addGridLayer(8);
 
 function removeAll(cellNum) {
-  const removeGrid = document.querySelector('.grid-container');
+  const allGrids = document.querySelectorAll('.grid-container');
   const cells = document.querySelectorAll('.cell-block');
 
   cells.forEach(cell => {
     cell.remove();
-    removeGrid.remove();
   });
-  generateGrid(cellNum);
-  addGridLayer(cellNum);
+
+  allGrids.forEach(grid => {
+    grid.remove();
+  });
+
+  const gridPanels = document.querySelectorAll('.layer-template');
+  gridPanels.forEach(panel => {
+    panel.remove();
+  });
+
+  zIndex = -1;
+  layerNumber = 0;
+
+  addGridLayer(8);
 }
 
-function addGridLayer(number) {
+function addGridLayer(number = 8) {
+  // make a new grid before GUI is added
+  generateGrid(number);
+
   layerNumber +=1;
 
-  const gridConfigPContainer = document.querySelector('.grid-configure');
+  const gridConfigContainer = document.querySelector('.grid-configure');
   
   // contains below elements
   const newLayer = document.createElement('div');
   newLayer.classList.add('layer-template');
+  newLayer.style.zIndex = zIndex;
 
   // layer name
   const layerName = document.createElement('p');
+  layerName.className = 'layer-name';
   layerName.textContent = `Layer ${layerNumber}`;
 
   // number of cells
   const numOfCells = document.createElement('p');
-  numOfCells.textContent = `[${number}]`;
+  numOfCells.className = 'cell-number';
+  numOfCells.textContent = `${number}x${number}`;
 
   // outline group
   const outlineToggle = document.createElement('div');
@@ -47,18 +66,20 @@ function addGridLayer(number) {
   const outlineIcon = document.createElement('div');
   outlineIcon.classList.add('outline-icon');
 
-  // turn outline of layer on/off
+  // turn cell outline on/off
   const outlineCheckbox = document.createElement('input');
-  outlineCheckbox.name = 'layer-name';
+  outlineCheckbox.className = 'outline-checkbox';
+  outlineCheckbox.classList.add('js-checkbox-icon');
+  outlineCheckbox.name = 'toggle-outline';
   outlineCheckbox.type = 'checkbox';
+  outlineCheckbox.checked = 'checked';
 
   const deleteIcon = document.createElement('i');
   deleteIcon.classList.add('fa');
   deleteIcon.classList.add('fa-trash-o');
   deleteIcon.classList.add('main-icon');
-  deleteIcon.classList.add('js-delete-layer');
+  deleteIcon.classList.add('js-delete-icon');
   deleteIcon.ariaHidden = true;
-
 
   newLayer.appendChild(layerName);
   newLayer.appendChild(numOfCells);
@@ -70,16 +91,145 @@ function addGridLayer(number) {
 
   newLayer.appendChild(deleteIcon);
 
-  gridConfigPContainer.appendChild(newLayer);
-//  <div class="layer-template">
-//   <p>layer 1</p>
-//   <p>[8]</p>
-//   <div class="outline-toggle">
-//     <div class="outline-icon"></div>
-//     <input name="layer-name" type="checkbox">
-//   </div>
-//   <i class="fa fa-trash-o main-icon js-delete-layer" aria-hidden="true"></i>
-// </div>
+  gridConfigContainer.appendChild(newLayer);
+
+  stateOfUI = 'active';
+
+  panelListeners();
+}
+let globalZIndex = 0;
+
+let canTweak = false;
+
+function panelListeners() {
+  let gridLayers = document.querySelectorAll('.layer-template');
+  const deleteIcons = document.querySelectorAll('.js-delete-icon');
+
+  const selectGrid = document.querySelectorAll('.grid-container');
+
+  deleteIcons.forEach((deleteIcon, index) => {
+    deleteIcon.addEventListener('click', () => {
+          
+      gridLayers[index].remove();
+      selectGrid[index].remove();
+      
+      stateOfUI = 'inactive';
+      console.log('delete pressed');
+
+      validateLayers();
+
+    });
+  });
+
+  const checkboxes = document.querySelectorAll('.js-checkbox-icon');
+
+  checkboxes.forEach((checkbox, index) => {
+    checkbox.addEventListener('click', (e) => {
+      gridOutlineConfig(index);
+    })
+  });
+
+  gridLayers.forEach((layer, index) => {
+    gridOutlineConfig(index);
+    let clickCount = 0;
+
+    layer.addEventListener('click', () => {
+      let gridFocus = document.querySelectorAll('.grid-container');
+      
+      let checkLayers = document.querySelectorAll('.layer-template');
+      let selected = document.querySelectorAll('.selected');
+
+      if (gridFocus.length !== 0) {
+        if (selected.length > 0) {
+          for (let i = 0; i < checkLayers.length; i++) {
+            checkLayers[i].classList.remove('selected');
+            gridFocus[i].style.zIndex = i;
+            clickCount = 0;
+            zIndex = i-1;
+          }
+        }
+
+        if (clickCount === 0) {
+          layer.classList.add('selected');
+
+          if(gridFocus[index]) {
+            gridFocus[index].style.zIndex = 2000;
+          }
+
+          clickCount = 1;
+        }
+
+        // else {
+        //   layer.classList.remove('selected');
+        //   console.log('jfsjgsijgsogj');
+        //   gridFocus[index].style.zIndex = index;
+        //   clickCount = 0;
+        // }
+      }
+    });
+  });
+
+}
+
+function validateLayers() {
+  const layersCheck = document.querySelectorAll('.layer-template');
+
+  const selectGrid = document.querySelectorAll('.grid-container');
+  const layerNames = document.querySelectorAll('.layer-name');
+
+  layerNumber = layersCheck.length;
+
+  layerNames.forEach((nameTag, index) => {
+    let newName = index + 1;
+    nameTag.textContent = `Layer ${newName}`; 
+    layersCheck[index].insertBefore(nameTag, layersCheck[index].childNodes[1]);
+  });
+}
+
+function gridOutlineConfig(target) {
+  const selectGrid = document.querySelectorAll('.grid-container');
+  const checkboxIcons = document.querySelectorAll('.js-checkbox-icon');
+
+  if (stateOfUI === 'active' && checkboxIcons[target].checked) {
+
+    selectGrid.forEach((grid, index) => {
+
+      if (index === target) {
+
+        for (cells of grid.childNodes) {
+          cells.style.outline = '1px solid rgba(255, 0, 0, 0.1)';
+        } 
+
+      }
+    });
+
+  }
+  else {
+    selectGrid.forEach((grid, index) => {
+
+      if (index === target) {
+
+        for (cells of grid.childNodes) {
+          cells.style.outline = 'none';
+        } 
+
+      }
+    });
+  }
+}
+
+function setGridOutline() {
+  const outlineCheckboxes = document.querySelectorAll('.js-checkbox-icon');
+  const currentGrid = document.querySelectorAll('.grid-container');
+
+  if (outlineCheckboxes[globalZIndex].checked) {
+    currentGrid[globalZIndex].style.outline = 'outline: 1px solid rgba(255, 0, 0, 0.1)';
+  }
+  else {
+    currentGrid[globalZIndex].style.outline = 'none';
+  }
+    
+
 }
 
 function generateGrid(cellNum = 16, grid = null, div = null) {
@@ -99,7 +249,10 @@ function generateGrid(cellNum = 16, grid = null, div = null) {
 
   parentContainer.appendChild(grid);
 
-  grid.style.width = `${gridSizeW}px`;
+  // grid.style.width = `${gridSizeW}px`;
+  // grid.style.height = `${gridSizeH}px`;
+
+  grid.style.width = `${100}%`;
   grid.style.height = `${gridSizeH}px`;
 
   // A div will act as a cell
@@ -197,10 +350,10 @@ function setCellCount() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     if (value > 0 && value <= 100 && value !== lastCellTotal) {
-      console.log(value);
-      console.log(e.type);
+      // console.log(value);
+      // console.log(e.type);
       
-      removeAll(value);
+      addGridLayer(value);
     }
   });
 }
@@ -301,167 +454,6 @@ menuHamburger.addEventListener('click', () => {
   animateBarBot.classList.toggle('animate-bar-bot');
 });
 
-// menuHamburger.addEventListener('mouseenter', () => {
-//   animateBarTop.classList.add('animate-bar-top');
-//   animateBarBot.classList.add('animate-bar-bot');
-// });
-
-// menuHamburger.addEventListener('mouseleave', () => {
-//   animateBarTop.classList.remove('animate-bar-top');
-//   animateBarBot.classList.remove('animate-bar-bot');
-// });
-
-const CSS_COLOR_NAMES = [
-  "AliceBlue",
-  "AntiqueWhite",
-  "Aqua",
-  "Aquamarine",
-  "Azure",
-  "Beige",
-  "Bisque",
-  "Black",
-  "BlanchedAlmond",
-  "Blue",
-  "BlueViolet",
-  "Brown",
-  "BurlyWood",
-  "CadetBlue",
-  "Chartreuse",
-  "Chocolate",
-  "Coral",
-  "CornflowerBlue",
-  "Cornsilk",
-  "Crimson",
-  "Cyan",
-  "DarkBlue",
-  "DarkCyan",
-  "DarkGoldenRod",
-  "DarkGray",
-  "DarkGrey",
-  "DarkGreen",
-  "DarkKhaki",
-  "DarkMagenta",
-  "DarkOliveGreen",
-  "DarkOrange",
-  "DarkOrchid",
-  "DarkRed",
-  "DarkSalmon",
-  "DarkSeaGreen",
-  "DarkSlateBlue",
-  "DarkSlateGray",
-  "DarkSlateGrey",
-  "DarkTurquoise",
-  "DarkViolet",
-  "DeepPink",
-  "DeepSkyBlue",
-  "DimGray",
-  "DimGrey",
-  "DodgerBlue",
-  "FireBrick",
-  "FloralWhite",
-  "ForestGreen",
-  "Fuchsia",
-  "Gainsboro",
-  "GhostWhite",
-  "Gold",
-  "GoldenRod",
-  "Gray",
-  "Grey",
-  "Green",
-  "GreenYellow",
-  "HoneyDew",
-  "HotPink",
-  "IndianRed",
-  "Indigo",
-  "Ivory",
-  "Khaki",
-  "Lavender",
-  "LavenderBlush",
-  "LawnGreen",
-  "LemonChiffon",
-  "LightBlue",
-  "LightCoral",
-  "LightCyan",
-  "LightGoldenRodYellow",
-  "LightGray",
-  "LightGrey",
-  "LightGreen",
-  "LightPink",
-  "LightSalmon",
-  "LightSeaGreen",
-  "LightSkyBlue",
-  "LightSlateGray",
-  "LightSlateGrey",
-  "LightSteelBlue",
-  "LightYellow",
-  "Lime",
-  "LimeGreen",
-  "Linen",
-  "Magenta",
-  "Maroon",
-  "MediumAquaMarine",
-  "MediumBlue",
-  "MediumOrchid",
-  "MediumPurple",
-  "MediumSeaGreen",
-  "MediumSlateBlue",
-  "MediumSpringGreen",
-  "MediumTurquoise",
-  "MediumVioletRed",
-  "MidnightBlue",
-  "MintCream",
-  "MistyRose",
-  "Moccasin",
-  "NavajoWhite",
-  "Navy",
-  "OldLace",
-  "Olive",
-  "OliveDrab",
-  "Orange",
-  "OrangeRed",
-  "Orchid",
-  "PaleGoldenRod",
-  "PaleGreen",
-  "PaleTurquoise",
-  "PaleVioletRed",
-  "PapayaWhip",
-  "PeachPuff",
-  "Peru",
-  "Pink",
-  "Plum",
-  "PowderBlue",
-  "Purple",
-  "RebeccaPurple",
-  "Red",
-  "RosyBrown",
-  "RoyalBlue",
-  "SaddleBrown",
-  "Salmon",
-  "SandyBrown",
-  "SeaGreen",
-  "SeaShell",
-  "Sienna",
-  "Silver",
-  "SkyBlue",
-  "SlateBlue",
-  "SlateGray",
-  "SlateGrey",
-  "Snow",
-  "SpringGreen",
-  "SteelBlue",
-  "Tan",
-  "Teal",
-  "Thistle",
-  "Tomato",
-  "Turquoise",
-  "Violet",
-  "Wheat",
-  "White",
-  "WhiteSmoke",
-  "Yellow",
-  "YellowGreen",
-];
-
 colourGrid();
 
 function colourGrid() {
@@ -486,7 +478,7 @@ function colourGrid() {
   div.classList.add('colour-cell');
 
   const cellNum = 6;
-  console.log(cellNum);
+  // console.log(cellNum);
 
   let cellSizeW = 40
   let cellSizeH = 40;
@@ -526,7 +518,7 @@ function colourGrid() {
     'Purple',
     'Coral',
     'Grey',
-    'DarkOrgange',
+    'DarkOrange',
     'LightBlue',
     'LightGreen',
     'Magenta',
@@ -578,10 +570,16 @@ function colourGrid() {
       colourTag.style.height = 'fit-content';
       colourTag.style.zIndex = 2000;
 
+      colourTag.style.textAlign = 'center';
+      colourTag.style.outline = 'none';
+      colourTag.style.border = 'none';
+
       colourTag.style.position = 'relative';
 
       colourTag.style.left = '4rem';
       colourTag.style.top = '-5rem';
+
+      colourTag.style.userSelect = 'none';
       
       colourChart.appendChild(colourTag);
     });
