@@ -56,21 +56,21 @@
               <label for="cell-input">New Grid Layer</label>
             </div>
             <div class="inputs">
-              <input id="cell-input" placeholder="Cells" type="number" min="1" max="100" size="100">
+              <input id="cell-input" placeholder="cell#" type="number" min="1" max="100" size="100">
               <button type="submit">New Grid</button>
             </div>
           </div>
         </form>
 
-        <div class="layer-template">
-          <p>layer 1</p>
+        <!-- <div class="layer-template">
+          <p class='layer-name'>layer 1</p>
           <p>[8]</p>
           <div class="outline-toggle">
             <div class="outline-icon"></div>
-            <input name="layer-name" type="checkbox">
+            <input name="toggle-outline" type="checkbox">
           </div>
           <i class="fa fa-trash-o main-icon js-delete-layer" aria-hidden="true"></i>
-        </div>
+        </div> -->
 
       </div>
 
@@ -79,9 +79,10 @@
         <li class="grid-size-icon icon">
           <div id="grid-btn" class="icon-mask"></div>
 
-          <i class="fa fa-map-o main-icon fold fa-grid-icon" aria-hidden="true"></i>
+          <!-- <i class="fa fa-map-o main-icon fold fa-grid-icon" aria-hidden="true"></i> -->
+          <i class="fa fa-th main-icon fold fa-grid-icon" aria-hidden="true"></i>
           <i class="fa fa-info-circle" aria-hidden="true"></i>
-          <p class="menu-info-box">grid-size
+          <p class="menu-info-box">grid-config
             <!-- <p class="sub-info">min 1 | max 100</p> -->
           </p>
 
@@ -130,6 +131,17 @@
       </div>
 
     </aside>
+
+    <footer>
+      <div class="footer-content">
+        <h2 class="author"><a href="index.html">mattxmade</a></h2>
+        <ul>
+          <li><a href="https://github.com/mattxmade"><i class="fa fa-github-square" aria-hidden="true"></i></a></li>
+          
+          <li><a href="https://twitter.com/mattxmade"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
+        </ul>
+      </div>
+    </footer>
   </div>
   
 </body>
