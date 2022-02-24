@@ -16,4 +16,4 @@
 
 <p>I began this project on the 15th Feb 2022. After Some intial experimenting, I am now ready to begin building the project into the final version.</p>
 
-<p><strong>Live: </strong><span><a href="">Ethc-A-Sketch</a></span></p>
+<p><strong>Live: </strong><span><a href="https://mattxmade.github.io/odin-etch-a-sketch/etch-a-sketch.html">Ethc-A-Sketch</a></span></p>
