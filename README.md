@@ -9,6 +9,7 @@
   <li>Eraser</li>
   <li>Colour changer</li>
   <li>Ability to change cell shape</li>
+  <li>Grid layer configurator</li>
 </ul>
 <br>
 <p>I also pushed myself to create a closer interaction between CSS + JavaScript to create fluid animations.</p>
