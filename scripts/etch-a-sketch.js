@@ -428,7 +428,7 @@ function updateCell(e) {
 
 function getRandomColour() {
   //const randomColours = ['red','green','blue'];
-  const randomColours = CSS_COLOR_NAMES;
+  // const randomColours = CSS_COLOR_NAMES;
   
   let randomColour = randomColours[Math.floor
     (Math.random() * randomColours.length)];
