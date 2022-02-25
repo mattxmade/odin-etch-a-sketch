@@ -1,40 +1,17 @@
+// Global Variables
 let drawColour = 'black';
 let lastColour = '';
 let lastCellTotal = 0;
 
 let zIndex = -1;
-
 let cellShape = 0;
-
 let layerNumber = 0;
-
 let stateOfUI = 'active';
 
+//=== 8x8 grid + grid config panel ===\\
 addGridLayer(8);
 
-function removeAll(cellNum) {
-  const allGrids = document.querySelectorAll('.grid-container');
-  const cells = document.querySelectorAll('.cell-block');
-
-  cells.forEach(cell => {
-    cell.remove();
-  });
-
-  allGrids.forEach(grid => {
-    grid.remove();
-  });
-
-  const gridPanels = document.querySelectorAll('.layer-template');
-  gridPanels.forEach(panel => {
-    panel.remove();
-  });
-
-  zIndex = -1;
-  layerNumber = 0;
-
-  addGridLayer(8);
-}
-
+//=== Grid UI creator ===\\
 function addGridLayer(number = 8) {
   // make a new grid before GUI is added
   generateGrid(number);
@@ -95,11 +72,9 @@ function addGridLayer(number = 8) {
 
   stateOfUI = 'active';
 
+  // Setup event triggers for new UI grid layer panel
   panelListeners();
 }
-let globalZIndex = 0;
-
-let canTweak = false;
 
 function panelListeners() {
   let gridLayers = document.querySelectorAll('.layer-template');
@@ -114,7 +89,7 @@ function panelListeners() {
       selectGrid[index].remove();
       
       stateOfUI = 'inactive';
-      console.log('delete pressed');
+      console.log('delete icon clicked');
 
       validateLayers();
 
@@ -125,14 +100,21 @@ function panelListeners() {
 
   checkboxes.forEach((checkbox, index) => {
     checkbox.addEventListener('click', (e) => {
+
+      // toggle cell grid outline for each layer
       gridOutlineConfig(index);
-    })
+    });
   });
 
   gridLayers.forEach((layer, index) => {
+
+    // enable cell outlines on inital grid
     gridOutlineConfig(index);
+
+    // always 0 -- WIP
     let clickCount = 0;
 
+    // Select a grid layer via GUI : bring grid to front using z-index
     layer.addEventListener('click', () => {
       let gridFocus = document.querySelectorAll('.grid-container');
       
@@ -159,6 +141,7 @@ function panelListeners() {
           clickCount = 1;
         }
 
+        // Only works if clickCount has global scope
         // else {
         //   layer.classList.remove('selected');
         //   console.log('jfsjgsijgsogj');
@@ -168,13 +151,10 @@ function panelListeners() {
       }
     });
   });
-
 }
 
 function validateLayers() {
   const layersCheck = document.querySelectorAll('.layer-template');
-
-  const selectGrid = document.querySelectorAll('.grid-container');
   const layerNames = document.querySelectorAll('.layer-name');
 
   layerNumber = layersCheck.length;
@@ -218,20 +198,31 @@ function gridOutlineConfig(target) {
   }
 }
 
-function setGridOutline() {
-  const outlineCheckboxes = document.querySelectorAll('.js-checkbox-icon');
-  const currentGrid = document.querySelectorAll('.grid-container');
+// All grids + cells deleted | create 8x8 grid
+function removeAll() {
+  const allGrids = document.querySelectorAll('.grid-container');
+  const cells = document.querySelectorAll('.cell-block');
 
-  if (outlineCheckboxes[globalZIndex].checked) {
-    currentGrid[globalZIndex].style.outline = 'outline: 1px solid rgba(255, 0, 0, 0.1)';
-  }
-  else {
-    currentGrid[globalZIndex].style.outline = 'none';
-  }
-    
+  cells.forEach(cell => {
+    cell.remove();
+  });
 
+  allGrids.forEach(grid => {
+    grid.remove();
+  });
+
+  const gridPanels = document.querySelectorAll('.layer-template');
+  gridPanels.forEach(panel => {
+    panel.remove();
+  });
+
+  zIndex = -1;
+  layerNumber = 0;
+
+  addGridLayer(8);
 }
 
+//=== Grid functions ===\\
 function generateGrid(cellNum = 16, grid = null, div = null) {
 
   lastCellTotal = cellNum;
@@ -248,9 +239,6 @@ function generateGrid(cellNum = 16, grid = null, div = null) {
   grid.style.zIndex = zIndex+=1;
 
   parentContainer.appendChild(grid);
-
-  // grid.style.width = `${gridSizeW}px`;
-  // grid.style.height = `${gridSizeH}px`;
 
   grid.style.width = `${100}%`;
   grid.style.height = `${gridSizeH}px`;
@@ -287,56 +275,6 @@ function generateGrid(cellNum = 16, grid = null, div = null) {
   setCellCount();
 }
 
-const menuButtons = document.querySelectorAll('.icon-mask');
-const gridConfig = document.querySelector('.grid-configure');
-const fillShapeButton  = document.querySelector('.fa-shape-icon');
-const colourDrawer = document.querySelector('.colour-picker');
-
-menuButtons.forEach(button => {
-
-  button.addEventListener('click', (e) => {
-    const buttonID = e.target.id;
-
-    switch(buttonID) {
-      case 'grid-btn':
-        gridConfig.classList.toggle('grid-drawer');
-        console.log('grid button clicked');
-        // transition
-        break;
-      case 'eraser-btn':
-        lastColour = drawColour;
-        drawColour = 'transparent';
-        console.log('eraser button clicked');
-        break;
-      case 'shape-btn':
-        console.log('shaper button clicked');
-        fillShapeButton.classList.toggle('fa-cube');
-        fillShapeButton.classList.toggle('fa-circle');
-        setCellFill();
-        break; 
-      case 'reset-btn':
-        removeAll(8);
-        console.log('reset button clicked');
-        break;
-      case 'colour-btn':
-        // drawColour = getRandomColour();
-        colourDrawer.classList.toggle('colour-tray');
-        console.log('colour button clicked');
-        break;      
-    }
-
-  });
-});
-
-function resetGrid(nodeList) {
-  const cells = document.querySelectorAll('.cell-block');
-
-  cells.forEach(cell => {
-    console.log(cell);
-    cell.style.background = 'transparent';
-  });
-} 
-
 function setCellCount() {
   let value = lastCellTotal;
 
@@ -349,22 +287,16 @@ function setCellCount() {
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (value > 0 && value <= 100 && value !== lastCellTotal) {
-      // console.log(value);
-      // console.log(e.type);
-      
+    if (value > 0 && value <= 100 && value !== lastCellTotal) {  
       addGridLayer(value);
     }
   });
 }
 
-function setCellFill() {
-  cellShape === 0 ? cellShape = 100 : cellShape = 0;
-}
-
+//=== Drawing functions ===\\
 function gridListeners(grid, cellArray) {
 
-  // Listeners
+  // Click drag to draw on grid
   grid.addEventListener('mousedown', () => {
     grid.id = 'draw-start';
     drawCaller(grid, cellArray);
@@ -373,33 +305,11 @@ function gridListeners(grid, cellArray) {
     grid.id = 'draw-stop';
     drawCaller(grid, cellArray);
   });
+}
 
-  // grid.addEventListener('mouseleave', () => {
-  //   window.addEventListener('mouseup', () => {
-  //     grid.id = 'draw-stop';
-  //     drawCaller(grid, cellArray);
-  //   });
-  //   window.addEventListener('mousedown', () => {
-  //     grid.addEventListener('mouseover', () => {
-  //       grid.id = 'draw-start';
-  //       drawCaller(grid, cellArray);
-  //     });
-  //   });
-  // });
-
-  // window.addEventListener('mousedown', () => {
-  //   grid.addEventListener('mouseover', () => {
-  //     grid.id = 'draw-start';
-  //     drawCaller(grid, cellArray);
-  //   });
-  // });
-  // window.addEventListener('mouseup', () => {
-  //   grid.addEventListener('mouseover', () => {
-  //     grid.id = 'draw-stop';
-  //     drawCaller(grid, cellArray);
-  //   });
-  // });
-
+// Fill shape toggle
+function setCellFill() {
+  cellShape === 0 ? cellShape = 100 : cellShape = 0;
 }
 
 function drawCaller(grid, cellArray) {
@@ -414,21 +324,20 @@ function drawCaller(grid, cellArray) {
 }
 
 function updateCell(e) {
-  // e.target.style.borderRadius = '100%';
   e.target.style.borderRadius = `${cellShape}%`;
 
   const newColour = getRandomColour();
   const saturate  = Math.round(getRandomNumber(100));
   
-  // e.target.style.backgroundColor = newColour;
-  // e.target.style.background = `linear-gradient(45deg, ${newColour}, red, red, blue, ${newColour})`;
   e.target.style.background = drawColour;
+
+  // draw FX | Transparency ?
   // e.target.style.filter = `saturate(${saturate}%)`;
+  // e.target.style.background = `linear-gradient(45deg, ${newColour}, red, red, blue, ${newColour})`;
 }
 
 function getRandomColour() {
   const randomColours = ['red','green','blue'];
-  // const randomColours = CSS_COLOR_NAMES;
   
   let randomColour = randomColours[Math.floor
     (Math.random() * randomColours.length)];
@@ -442,6 +351,7 @@ function getRandomNumber(num) {
   return Math.random() * (max - min) + min;
 }
 
+//=== Menu Button ===\\
 const menuHamburger = document.getElementById('menu-btn');
 const optionsBar = document.querySelector('.options-menu');
 
@@ -454,8 +364,54 @@ menuHamburger.addEventListener('click', () => {
   animateBarBot.classList.toggle('animate-bar-bot');
 });
 
+//=== Menu Options Bar ===\\
+const menuButtons = document.querySelectorAll('.icon-mask');
+const gridConfig = document.querySelector('.grid-configure');
+const fillShapeButton  = document.querySelector('.fa-shape-icon');
+const colourDrawer = document.querySelector('.colour-picker');
+
+menuButtons.forEach(button => {
+
+  button.addEventListener('click', (e) => {
+    const buttonID = e.target.id;
+
+    switch(buttonID) {
+      case 'grid-btn':
+        console.log('grid icon clicked');
+        gridConfig.classList.toggle('grid-drawer');
+        break;
+
+      case 'eraser-btn':
+        console.log('eraser icon clicked');
+        lastColour = drawColour;
+        drawColour = 'transparent';
+        break;
+
+      case 'shape-btn':
+        console.log('shaper icon clicked');
+        fillShapeButton.classList.toggle('fa-cube');
+        fillShapeButton.classList.toggle('fa-circle');
+        setCellFill();
+        break; 
+
+      case 'reset-btn':
+        removeAll();
+        console.log('reset icon clicked');
+        break;
+
+      case 'colour-btn':
+        console.log('colour icon clicked');
+        colourDrawer.classList.toggle('colour-tray');
+        break;      
+    }
+
+  });
+});
+
+//=== Colour Picker ===\\
 colourGrid();
 
+//=== JS generated Colour Panel Grid ===\\
 function colourGrid() {
 
   // How big in pixels should the grid be?
@@ -478,7 +434,6 @@ function colourGrid() {
   div.classList.add('colour-cell');
 
   const cellNum = 6;
-  // console.log(cellNum);
 
   let cellSizeW = 40
   let cellSizeH = 40;
@@ -502,6 +457,7 @@ function colourGrid() {
     cellArray.push(newCell); 
   }
 
+  //=== 36 Colour choice ===\\
   const thirtySix = [
     'Black',
     'White',
@@ -551,12 +507,13 @@ function colourGrid() {
     colourCell.id = thirtySix[index];
 
     colourCell.addEventListener('click', (e) => {
-      console.log(e.target.id);
+      console.log(`You selected: ${e.target.id}`);
 
       let newColour = e.target.id;
       drawColour = newColour;
     });
 
+    //=== Mouseover colour shows name ===\\
     const colourTag = document.createElement('p');
     const colourChart = document.querySelector('.colour-cell');
 
@@ -588,5 +545,4 @@ function colourGrid() {
     });
 
   });
-
 }
