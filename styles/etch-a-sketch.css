@@ -242,6 +242,8 @@ h1 {
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  
+  flex-shrink: 0;
 }
 
 .bar-top,
