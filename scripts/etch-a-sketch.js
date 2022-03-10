@@ -140,14 +140,6 @@ function panelListeners() {
 
           clickCount = 1;
         }
-
-        // Only works if clickCount has global scope
-        // else {
-        //   layer.classList.remove('selected');
-        //   console.log('jfsjgsijgsogj');
-        //   gridFocus[index].style.zIndex = index;
-        //   clickCount = 0;
-        // }
       }
     });
   });
@@ -330,10 +322,6 @@ function updateCell(e) {
   const saturate  = Math.round(getRandomNumber(100));
   
   e.target.style.background = drawColour;
-
-  // draw FX | Transparency ?
-  // e.target.style.filter = `saturate(${saturate}%)`;
-  // e.target.style.background = `linear-gradient(45deg, ${newColour}, red, red, blue, ${newColour})`;
 }
 
 function getRandomColour() {
