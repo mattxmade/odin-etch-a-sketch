@@ -2,7 +2,7 @@
 <a href="#"><img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" alt="html-badge"/></a>
 <a href="#"><img src="https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white" alt="css-badge"/></a>
 <a href="#"><img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" alt="javascript-badge"/></a>
-# <a href="#"><img src="etch-icon_32x32.ico" width="24"/></a> Etch A Sketch | <a href="https://mattxmade.github.io/odin-etch-a-sketch" target="_blank"> <strong>Live</strong></a>
+# <a href="#"><img src="favicon.ico" width="24"/></a> Etch A Sketch | <a href="https://mattxmade.github.io/odin-etch-a-sketch" target="_blank"> <strong>Live</strong></a>
 
 > ### A HTML CSS JavaScript project based on the classic toy
 
